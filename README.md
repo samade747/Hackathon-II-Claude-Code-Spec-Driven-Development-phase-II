@@ -211,3 +211,5 @@ This project follows spec-driven development principles:
 ## License
 
 This is a demonstration project for Hackathon II - Evolution of Todo.
+
+![Profile Views](https://komarev.com/ghpvc/?username=samade747&style=flat-square)
