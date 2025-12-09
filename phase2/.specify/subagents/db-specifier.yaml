@@ -1,0 +1,11 @@
+name: db-specifier
+purpose: Define database schema and models
+scope:
+  - specs/database
+rules:
+  - Must include user ownership
+  - Define indexes where needed
+  - Avoid premature optimization
+output:
+  format: markdown
+  location: specs/database

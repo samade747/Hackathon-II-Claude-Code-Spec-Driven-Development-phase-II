@@ -1,0 +1,11 @@
+name: auth-specifier
+purpose: Define authentication & authorization behavior
+scope:
+  - specs/features
+  - specs/api
+rules:
+  - JWT based auth
+  - User isolation mandatory
+  - Cross-reference Better Auth behavior
+output:
+  format: markdown

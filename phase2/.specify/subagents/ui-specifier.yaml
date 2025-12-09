@@ -1,0 +1,11 @@
+name: ui-specifier
+purpose: Define frontend pages and components
+scope:
+  - specs/ui
+rules:
+  - App Router only
+  - Map UI to user stories
+  - Stay implementation-agnostic
+output:
+  format: markdown
+  location: specs/ui

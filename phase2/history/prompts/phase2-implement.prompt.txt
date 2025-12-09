@@ -1,0 +1,171 @@
+You are Claude Code working in a monorepo for Hackathon II – Evolution of Todo (Phase II).
+
+## GOAL
+
+Implement the complete **Phase II: Todo Full-Stack Web Application** using Spec-Driven Development.
+
+You MUST:
+
+- Read and respect all specs under `/specs`.
+- Implement a full **frontend** (Next.js App Router + Tailwind + JS) in `/frontend`.
+- Implement a full **backend** (FastAPI + SQLModel + Neon-ready) in `/backend`.
+- Implement Better Auth integration with JWT so that FastAPI can authenticate and authorize all requests.
+- Implement all REST endpoints and UI behaviors described in the specs.
+
+## REPO STRUCTURE
+
+The repo root contains:
+
+- `.spec-kit/config.yaml`
+- `specs/`
+  - `overview.md`
+  - `architecture.md`
+  - `todo.constitution.md`
+  - `features/task-crud.md`
+  - `features/authentication.md`
+  - `features/phase2-fullstack-todo.md`  (master Phase II spec)
+  - `api/rest-endpoints.md`
+  - `database/schema.md`
+  - `ui/components.md`
+  - `ui/pages.md`
+- `CLAUDE.md`               (root guidelines)
+- `frontend/CLAUDE.md`      (frontend guidelines)
+- `backend/CLAUDE.md`       (backend guidelines)
+- `frontend/`               (Next.js app – may be partially scaffolded)
+- `backend/`                (FastAPI app – may be partially scaffolded)
+
+YOU SHOULD INSPECT THESE FILES BEFORE CODING:
+- `@specs/overview.md`
+- `@specs/todo.constitution.md`
+- `@specs/architecture.md`
+- `@specs/features/task-crud.md`
+- `@specs/features/authentication.md`
+- `@specs/features/phase2-fullstack-todo.md`
+- `@specs/api/rest-endpoints.md`
+- `@specs/database/schema.md`
+- `@specs/ui/components.md`
+- `@specs/ui/pages.md`
+- `@frontend/CLAUDE.md`
+- `@backend/CLAUDE.md`
+
+## TECHNOLOGY CONSTRAINTS
+
+Frontend:
+- Next.js App Router (13.4 or later; compatible with 16+)
+- JavaScript (no TypeScript)
+- Tailwind CSS
+
+Backend:
+- FastAPI
+- SQLModel
+- Neon PostgreSQL (via DATABASE_URL), SQLite fallback allowed for dev
+- JWT auth with Better Auth shared secret `BETTER_AUTH_SECRET`
+
+Auth:
+- Better Auth runs in Next.js.
+- On login, Better Auth issues a JWT that includes a user identifier (`user_id` or `sub`).
+- Frontend attaches `Authorization: Bearer <token>` on every API call.
+- Backend verifies this JWT using `BETTER_AUTH_SECRET` and ensures that the `{user_id}` path parameter matches the token’s user id.
+
+## BACKEND IMPLEMENTATION TASKS
+
+1. Implement SQLModel models in `backend/app/models.py` according to:
+   - `@specs/todo.constitution.md`
+   - `@specs/database/schema.md`
+
+2. Implement Pydantic schemas in `backend/app/schemas.py` for:
+   - TaskCreate
+   - TaskRead
+   - TaskUpdate
+
+3. Implement JWT verification helpers in something like:
+   - `backend/app/auth.py`
+   This must:
+   - Read `BETTER_AUTH_SECRET` from env.
+   - Verify JWT.
+   - Extract `user_id`.
+   - Provide a FastAPI dependency that returns the authenticated user id.
+
+4. Implement REST endpoints in `backend/app/api/tasks.py` exactly as defined in:
+   - `@specs/api/rest-endpoints.md`
+   Including:
+   - GET /api/{user_id}/tasks
+   - POST /api/{user_id}/tasks
+   - GET /api/{user_id}/tasks/{id}
+   - PUT /api/{user_id}/tasks/{id}
+   - DELETE /api/{user_id}/tasks/{id}
+   - PATCH /api/{user_id}/tasks/{id}/complete
+
+   Enforce:
+   - JWT required on all endpoints.
+   - Path user_id must match token user_id.
+   - All task queries are filtered by user_id.
+
+5. Wire everything in `backend/app/main.py`:
+   - CORS for `http://localhost:3000`
+   - Include tasks router under `/api`
+   - Initialize DB on startup.
+
+6. Create tests in `backend/tests/test_tasks.py` that cover:
+   - Create task
+   - List tasks with filters/search
+   - Update task
+   - Delete task
+   - Complete/toggle task
+   - Unauthorized access (missing/invalid JWT)
+   You may mock JWT verification for tests if needed.
+
+7. Ensure backend can run via:
+   - `cd backend`
+   - `pip install -r requirements.txt`
+   - `uvicorn uvicorn_app:app --reload --port 8000`
+
+## FRONTEND IMPLEMENTATION TASKS
+
+1. Create/complete a Next.js App Router app in `/frontend` with:
+   - `app/layout.js`
+   - `app/page.js`
+   - `app/todos/page.js`
+   - Optional: `app/todos/new/page.js`, `app/todos/[id]/page.js`
+   - `components/` with:
+     - `Navbar.js`
+     - `TodoList.js`
+     - `TodoItem.js`
+     - `TodoForm.js`
+     - `TodoFilters.js`
+   - Tailwind CSS configured.
+
+2. Integrate Better Auth on the frontend:
+   - Implement signup/signin pages or UI according to `@specs/features/authentication.md`.
+   - On successful login, obtain a JWT token.
+   - Store the JWT securely (e.g., httpOnly cookie or appropriate storage).
+
+3. Implement an API client (e.g., `frontend/lib/api.js`) that:
+   - Reads JWT token.
+   - Attaches `Authorization: Bearer <token>` header to all requests.
+   - Talks to `http://localhost:8000`.
+
+4. Implement UI behavior according to:
+   - `@specs/ui/pages.md`
+   - `@specs/ui/components.md`
+   - `@specs/features/task-crud.md`
+
+   Including:
+   - Listing tasks with filters/search/sort.
+   - Creating tasks via TodoForm and `POST /api/{user_id}/tasks`.
+   - Editing tasks.
+   - Deleting tasks.
+   - Toggling completion.
+
+5. Ensure frontend runs via:
+   - `cd frontend`
+   - `npm install`
+   - `npm run dev`
+
+## OUTPUT FORMAT
+
+- Make all changes directly in the repository as edits to existing files or creation of new ones.
+- Do NOT invent a different structure.
+- Follow good modular design and keep code readable.
+
+Start by summarizing your plan from the specs, then proceed to implement the backend and frontend in small, focused steps, showing the diff or content for each file you create or modify.

@@ -1,0 +1,11 @@
+name: feature-specifier
+purpose: Write clear, testable feature specifications
+scope:
+  - specs/features
+rules:
+  - Follow todo.constitution.md
+  - Use Given/When/Then acceptance criteria
+  - No implementation details
+output:
+  format: markdown
+  location: specs/features

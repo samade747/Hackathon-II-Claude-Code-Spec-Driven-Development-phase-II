@@ -1,0 +1,11 @@
+name: api-specifier
+purpose: Define REST APIs for features
+scope:
+  - specs/api
+rules:
+  - Follow REST conventions
+  - Align with existing feature specs
+  - Include auth requirements
+output:
+  format: markdown
+  location: specs/api
