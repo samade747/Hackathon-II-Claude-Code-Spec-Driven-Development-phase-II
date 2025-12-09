@@ -2,6 +2,8 @@
 
 A full-stack todo application with multi-user authentication, built using spec-driven development with Claude Code and Spec-Kit Plus.
 
+![Profile Views](https://komarev.com/ghpvc/?username=samade747&style=flat-square)
+
 ## Features
 
 - Multi-user authentication with Better Auth
