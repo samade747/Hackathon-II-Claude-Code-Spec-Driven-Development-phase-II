@@ -12,8 +12,7 @@
     "next": "^14.0.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "better-auth": "^0.7.0",
-    "@better-auth/client": "^0.7.0"
+    "better-auth": "^1.4.7"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.16",
