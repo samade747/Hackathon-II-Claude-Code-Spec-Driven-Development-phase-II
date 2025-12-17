@@ -20,12 +20,14 @@ class Task(SQLModel, table=True):
     updated_at: datetime = Field(default_factory=datetime.utcnow)
 
 
+from sqlalchemy import Column, String, TIMESTAMP, Text
+
 class Session(SQLModel, table=True):
     __tablename__ = "session"
 
     id: str = Field(primary_key=True)
     token: str = Field(unique=True, index=True)
-    userId: str = Field(index=True)
-    expiresAt: datetime
-    ipAddress: Optional[str] = None
-    userAgent: Optional[str] = None
+    userId: str = Field(sa_column=Column("userId", Text, index=True, nullable=False))
+    expiresAt: datetime = Field(sa_column=Column("expiresAt", TIMESTAMP, nullable=False))
+    ipAddress: Optional[str] = Field(default=None, sa_column=Column("ipAddress", Text))
+    userAgent: Optional[str] = Field(default=None, sa_column=Column("userAgent", Text))
