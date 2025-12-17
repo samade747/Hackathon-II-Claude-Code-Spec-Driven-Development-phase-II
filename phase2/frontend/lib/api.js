@@ -1,6 +1,6 @@
 import { getToken, getUserId } from './auth-client';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || (process.env.NODE_ENV === 'production' ? 'https://hackathon-ii-backend-production.up.railway.app' : 'http://localhost:8000');
 
 async function fetchWithAuth(url, options = {}) {
   const token = await getToken();

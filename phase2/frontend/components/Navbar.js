@@ -12,7 +12,7 @@ export default function Navbar() {
     async function loadUser() {
       try {
         const session = await authClient.getSession();
-        setUser(session?.user || null);
+        setUser(session?.data?.user || null);
       } catch (error) {
         console.error('Failed to load user:', error);
       } finally {

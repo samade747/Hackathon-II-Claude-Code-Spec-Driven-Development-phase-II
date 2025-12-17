@@ -53,17 +53,13 @@ export default function TodosPage() {
       try {
         const session = await authClient.getSession();
         if (!session?.data?.user) {
-          console.warn("CheckAuth Failed: Session invalid", session);
-          // router.push('/signin'); // DISABLE REDIRECT FOR DEBUGGING
-          alert("Debug: CheckAuth thinks session is invalid! Check console.");
+          router.push('/signin');
           return;
         }
-        console.log("CheckAuth Success:", session.data.user);
         setUser(session.data.user);
       } catch (error) {
         console.error('Auth check failed:', error);
-        // router.push('/signin'); // DISABLE REDIRECT FOR DEBUGGING
-        alert("Debug: CheckAuth crashed: " + error.message);
+        router.push('/signin');
       }
     }
 
