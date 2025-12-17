@@ -32,6 +32,8 @@ try {
     });
 
     console.log('Better Auth initialized with explicit Kysely. Migrations should run automatically.');
+    await new Promise(resolve => setTimeout(resolve, 5000)); // Wait for migration
+
 } catch (error) {
     console.error('Migration failed:', error);
 }

@@ -5,7 +5,7 @@
 // If that fails, we can use https.
 
 async function seedUser() {
-    const url = 'http://localhost:3000/api/auth/sign-up/email';
+    const url = 'http://localhost:3002/api/auth/sign-up/email';
     const body = {
         email: 'test@example.com',
         password: 'password123',
