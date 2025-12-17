@@ -6,6 +6,30 @@ import Link from 'next/link';
 import { authClient } from '@/lib/auth-client';
 import { Loader2, Mail, Lock, ArrowRight, Eye, EyeOff } from 'lucide-react';
 
+function SessionDebugger() {
+  const [debugSession, setDebugSession] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function check() {
+      try {
+        const res = await authClient.getSession();
+        setDebugSession(res);
+      } catch (e) { setDebugSession({ error: e.message }); }
+      finally { setLoading(false); }
+    }
+    check();
+  }, []);
+
+  return (
+    <div>
+      <div className="mb-1">Detected Session: {loading ? 'Checking...' : (debugSession?.data ? 'YES (Logged In)' : 'NO (Null)')}</div>
+      <pre>{JSON.stringify(debugSession, null, 2)}</pre>
+      <button onClick={() => window.location.reload()} className="mt-2 text-sky-400 underline">Refresh Page</button>
+    </div>
+  );
+}
+
 export default function SignInPage() {
   const router = useRouter();
   const [formData, setFormData] = useState({
@@ -156,6 +180,30 @@ export default function SignInPage() {
           </div>
         </div>
       </div>
+    </div>
+  );
+}
+
+function SessionDebugger() {
+  const [debugSession, setDebugSession] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function check() {
+      try {
+        const res = await authClient.getSession();
+        setDebugSession(res);
+      } catch (e) { setDebugSession({ error: e.message }); }
+      finally { setLoading(false); }
+    }
+    check();
+  }, []);
+
+  return (
+    <div>
+      <div className="mb-1">Detected Session: {loading ? 'Checking...' : (debugSession?.data ? 'YES (Logged In)' : 'NO (Null)')}</div>
+      <pre>{JSON.stringify(debugSession, null, 2)}</pre>
+      <button onClick={() => window.location.reload()} className="mt-2 text-sky-400 underline">Refresh Page</button>
     </div>
   );
 }

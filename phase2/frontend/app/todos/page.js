@@ -118,7 +118,10 @@ export default function TodosPage() {
   if (!user) {
     return (
       <div className="text-center py-12">
-        <p className="text-slate-400">Loading...</p>
+        <div className="text-center py-12">
+          <p className="text-slate-400">Loading Session...</p>
+          <p className="text-xs text-slate-600 mt-2 font-mono">If this persists, check console or /signin debug box.</p>
+        </div>
       </div>
     );
   }
