@@ -9,6 +9,7 @@ import { Loader2, Mail, Lock, ArrowRight, Eye, EyeOff } from 'lucide-react';
 function SessionDebugger() {
   const [debugSession, setDebugSession] = useState(null);
   const [loading, setLoading] = useState(true);
+  const router = useRouter();
 
   useEffect(() => {
     async function checkExisting() {
