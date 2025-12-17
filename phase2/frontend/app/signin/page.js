@@ -11,6 +11,17 @@ function SessionDebugger() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    async function checkExisting() {
+      const res = await authClient.getSession();
+      if (res?.data) {
+        console.log("Already logged in, redirecting to /todos");
+        router.push('/todos');
+      }
+    }
+    checkExisting();
+  }, [router]);
+
+  useEffect(() => {
     async function check() {
       try {
         const res = await authClient.getSession();
@@ -23,7 +34,7 @@ function SessionDebugger() {
 
   return (
     <div>
-      <div className="mb-1">Detected Session: {loading ? 'Checking...' : (debugSession?.data ? 'YES (Logged In)' : 'NO (Null)')}</div>
+      <div className="mb-1">Detected Session: {loading ? 'Checking...' : (debugSession?.data ? 'YES (Logged In) -> Redirecting...' : 'NO (Null)')}</div>
       <pre>{JSON.stringify(debugSession, null, 2)}</pre>
       <button onClick={() => window.location.reload()} className="mt-2 text-sky-400 underline">Refresh Page</button>
     </div>
