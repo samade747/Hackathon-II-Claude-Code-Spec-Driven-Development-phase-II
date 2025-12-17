@@ -8,6 +8,30 @@ import TodoFilters from '@/components/TodoFilters';
 import { authClient } from '@/lib/auth-client';
 import { getTasks, createTask, updateTask, deleteTask, toggleTaskComplete } from '@/lib/api';
 
+function SessionDebugger() {
+  const [debugSession, setDebugSession] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function check() {
+      try {
+        const res = await authClient.getSession();
+        setDebugSession(res);
+      } catch (e) { setDebugSession({ error: e.message }); }
+      finally { setLoading(false); }
+    }
+    check();
+  }, []);
+
+  return (
+    <div>
+      <div>{loading ? 'Checking...' : (debugSession?.data ? 'YES (Valid)' : 'NO (Null/Revoked)')}</div>
+      <pre className="text-slate-500 mt-2 whitespace-pre-wrap">{JSON.stringify(debugSession, null, 2)}</pre>
+      <button onClick={() => window.location.reload()} className="mt-2 text-sky-400 underline">Refresh Page</button>
+    </div>
+  );
+}
+
 export default function TodosPage() {
   const router = useRouter();
   const [user, setUser] = useState(null);
@@ -118,13 +142,13 @@ export default function TodosPage() {
   if (!user) {
     return (
       <div className="text-center py-12">
-      <div className="text-center py-12">
-        <p className="text-slate-400">Loading Session...</p>
-        <div className="mt-4 p-4 bg-slate-900 rounded mx-auto max-w-sm text-left font-mono text-xs text-slate-400">
-             <p className="mb-2 font-bold text-sky-500">Todos Page Debugger:</p>
-             <SessionDebugger />
+        <div className="text-center py-12">
+          <p className="text-slate-400">Loading Session...</p>
+          <div className="mt-4 p-4 bg-slate-900 rounded mx-auto max-w-sm text-left font-mono text-xs text-slate-400">
+            <p className="mb-2 font-bold text-sky-500">Todos Page Debugger:</p>
+            <SessionDebugger />
+          </div>
         </div>
-      </div>
       </div>
     );
   }
