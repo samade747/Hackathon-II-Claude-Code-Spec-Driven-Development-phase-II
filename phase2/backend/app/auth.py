@@ -1,44 +1,44 @@
 import os
+from datetime import datetime
 from typing import Optional
 from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
-from jose import JWTError, jwt
+from sqlmodel import select, Session as DBSession
 
-BETTER_AUTH_SECRET = os.getenv("BETTER_AUTH_SECRET")
-if not BETTER_AUTH_SECRET:
-    raise ValueError("BETTER_AUTH_SECRET environment variable is required")
+from app.db import get_session
+from app.models import Session
 
-ALGORITHM = "HS256"
-
+# Removed BETTER_AUTH_SECRET check as we now use DB verification
 security = HTTPBearer()
-
-
-def verify_jwt(token: str) -> dict:
-    try:
-        payload = jwt.decode(token, BETTER_AUTH_SECRET, algorithms=[ALGORITHM])
-        return payload
-    except JWTError as e:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid authentication credentials",
-            headers={"WWW-Authenticate": "Bearer"},
-        )
 
 
 def get_current_user_id(
     credentials: HTTPAuthorizationCredentials = Depends(security),
+    db: DBSession = Depends(get_session),
 ) -> str:
     token = credentials.credentials
-    payload = verify_jwt(token)
+    
+    # 1. Query the session table for this token
+    statement = select(Session).where(Session.token == token)
+    session_record = db.exec(statement).first()
 
-    user_id = payload.get("sub") or payload.get("user_id")
-    if not user_id:
+    if not session_record:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid token: no user_id found",
+            detail="Invalid session token",
+            headers={"WWW-Authenticate": "Bearer"},
         )
 
-    return user_id
+    # 2. Check for expiration
+    if session_record.expiresAt < datetime.utcnow():
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Session expired",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+
+    # 3. Return the attached userId
+    return session_record.userId
 
 
 def verify_user_access(user_id: str, path_user_id: str) -> None:

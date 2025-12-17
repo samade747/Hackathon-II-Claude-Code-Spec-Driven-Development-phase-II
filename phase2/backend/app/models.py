@@ -18,3 +18,14 @@ class Task(SQLModel, table=True):
     recurrence_rule: Optional[str] = None
     created_at: datetime = Field(default_factory=datetime.utcnow)
     updated_at: datetime = Field(default_factory=datetime.utcnow)
+
+
+class Session(SQLModel, table=True):
+    __tablename__ = "session"
+
+    id: str = Field(primary_key=True)
+    token: str = Field(unique=True, index=True)
+    userId: str = Field(index=True)
+    expiresAt: datetime
+    ipAddress: Optional[str] = None
+    userAgent: Optional[str] = None
