@@ -1,8 +1,13 @@
 import { getToken, getUserId } from './auth-client';
 
 const isLocal = typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || (isLocal ? 'http://localhost:8000' : 'https://hackathon-ii-backend-production.up.railway.app');
-console.log("API_BASE_URL Configured:", API_BASE_URL);
+
+// CRITICAL: Force Production URL on Vercel, ignoring potential localhost env vars
+const API_BASE_URL = (typeof window !== 'undefined' && window.location.hostname.includes('vercel.app'))
+  ? 'https://hackathon-ii-backend-production.up.railway.app'
+  : (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000');
+
+console.log("API Config:", { currentHost: typeof window !== 'undefined' ? window.location.hostname : 'SSR', selectedApi: API_BASE_URL });
 
 async function fetchWithAuth(url, options = {}) {
   const token = await getToken();
