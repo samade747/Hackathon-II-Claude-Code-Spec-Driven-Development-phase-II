@@ -1,12 +1,11 @@
 'use client';
 
-import Link from 'next/link';
-import { useEffect, useState } from 'react';
-import { authClient } from '@/lib/auth-client';
+import { usePathname } from 'next/navigation';
 
 export default function Navbar() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const pathname = usePathname();
 
   useEffect(() => {
     async function loadUser() {
@@ -21,7 +20,7 @@ export default function Navbar() {
     }
 
     loadUser();
-  }, []);
+  }, [pathname]);
 
   async function handleSignOut() {
     try {
