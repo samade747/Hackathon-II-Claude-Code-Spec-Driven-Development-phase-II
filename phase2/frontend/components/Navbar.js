@@ -1,6 +1,9 @@
 'use client';
 
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
+import { authClient } from '@/lib/auth-client';
 
 export default function Navbar() {
   const [user, setUser] = useState(null);
