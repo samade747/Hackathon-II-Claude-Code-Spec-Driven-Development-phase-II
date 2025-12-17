@@ -29,8 +29,8 @@ export default function SignInPage() {
 
     try {
       await authClient.signIn.email({
-        email: formData.email,
-        password: formData.password,
+        email: formData.email.trim(),
+        password: formData.password.trim(),
       });
 
       router.push('/todos');
@@ -48,7 +48,7 @@ export default function SignInPage() {
       <div className="w-full max-w-md">
         {/* Glassmorphism Card */}
         <div className="backdrop-blur-xl bg-slate-900/60 border border-slate-700/50 rounded-2xl p-8 shadow-2xl relative overflow-hidden">
-          
+
           {/* Background decoration */}
           <div className="absolute top-0 right-0 -mt-16 -mr-16 w-32 h-32 bg-sky-500/10 rounded-full blur-3xl"></div>
           <div className="absolute bottom-0 left-0 -mb-16 -ml-16 w-32 h-32 bg-blue-600/10 rounded-full blur-3xl"></div>
@@ -92,9 +92,9 @@ export default function SignInPage() {
 
               <div className="space-y-1.5">
                 <div className="flex justify-between items-center ml-1">
-                    <label htmlFor="password" className="block text-sm font-medium text-slate-300">
-                      Password
-                    </label>
+                  <label htmlFor="password" className="block text-sm font-medium text-slate-300">
+                    Password
+                  </label>
                 </div>
                 <div className="relative group">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-500 group-focus-within:text-sky-400 transition-colors">

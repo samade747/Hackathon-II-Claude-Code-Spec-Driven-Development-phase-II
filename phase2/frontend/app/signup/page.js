@@ -9,6 +9,7 @@ import { Loader2, Mail, Lock, UserPlus, CheckCircle2, XCircle, Eye, EyeOff } fro
 export default function SignUpPage() {
   const router = useRouter();
   const [formData, setFormData] = useState({
+    name: '',
     email: '',
     password: '',
     confirmPassword: '',
@@ -47,6 +48,7 @@ export default function SignUpPage() {
       await authClient.signUp.email({
         email: formData.email,
         password: formData.password,
+        name: formData.name,
       });
 
       router.push('/todos');
@@ -84,6 +86,26 @@ export default function SignUpPage() {
             )}
 
             <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="space-y-1.5">
+                <label htmlFor="name" className="block text-sm font-medium text-slate-300 ml-1">
+                  Full Name
+                </label>
+                <div className="relative group">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-500 group-focus-within:text-sky-400 transition-colors">
+                    <UserPlus size={18} />
+                  </div>
+                  <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    required
+                    placeholder="John Doe"
+                    className="block w-full pl-10 pr-3 py-2.5 bg-slate-950/50 border border-slate-700/50 rounded-xl text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-sky-500/50 focus:ring-2 focus:ring-sky-500/20 transition-all duration-200"
+                  />
+                </div>
+              </div>
               <div className="space-y-1.5">
                 <label htmlFor="email" className="block text-sm font-medium text-slate-300 ml-1">
                   Email Address
@@ -151,8 +173,8 @@ export default function SignUpPage() {
                     required
                     placeholder="Repeat password"
                     className={`block w-full pl-10 pr-10 py-2.5 bg-slate-950/50 border rounded-xl text-slate-100 placeholder:text-slate-600 focus:outline-none focus:ring-2 transition-all duration-200 ${formData.confirmPassword && !passwordsMatch
-                        ? 'border-red-500/50 focus:border-red-500/50 focus:ring-red-500/20'
-                        : 'border-slate-700/50 focus:border-sky-500/50 focus:ring-sky-500/20'
+                      ? 'border-red-500/50 focus:border-red-500/50 focus:ring-red-500/20'
+                      : 'border-slate-700/50 focus:border-sky-500/50 focus:ring-sky-500/20'
                       }`}
                   />
                   <button
