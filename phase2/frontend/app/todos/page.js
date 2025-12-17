@@ -52,11 +52,11 @@ export default function TodosPage() {
     async function checkAuth() {
       try {
         const session = await authClient.getSession();
-        if (!session?.user) {
+        if (!session?.data?.user) {
           router.push('/signin');
           return;
         }
-        setUser(session.user);
+        setUser(session.data.user);
       } catch (error) {
         console.error('Auth check failed:', error);
         router.push('/signin');

@@ -6,10 +6,10 @@ export const authClient = createAuthClient({
 
 export async function getToken() {
   const session = await authClient.getSession();
-  return session?.session?.token || null;
+  return session?.data?.session?.token || null;
 }
 
 export async function getUserId() {
   const session = await authClient.getSession();
-  return session?.user?.id || null;
+  return session?.data?.user?.id || null;
 }
