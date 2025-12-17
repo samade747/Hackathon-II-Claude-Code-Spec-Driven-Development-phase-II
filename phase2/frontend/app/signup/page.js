@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { authClient } from '@/lib/auth-client';
-import { Loader2, Mail, Lock, UserPlus, CheckCircle2, XCircle } from 'lucide-react';
+import { Loader2, Mail, Lock, UserPlus, CheckCircle2, XCircle, Eye, EyeOff } from 'lucide-react';
 
 export default function SignUpPage() {
   const router = useRouter();
@@ -15,6 +15,8 @@ export default function SignUpPage() {
   });
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   function handleChange(e) {
     const { name, value } = e.target;
@@ -112,7 +114,7 @@ export default function SignUpPage() {
                     <Lock size={18} />
                   </div>
                   <input
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     id="password"
                     name="password"
                     value={formData.password}
@@ -120,17 +122,15 @@ export default function SignUpPage() {
                     required
                     minLength={8}
                     placeholder="At least 8 characters"
-                    className="block w-full pl-10 pr-3 py-2.5 bg-slate-950/50 border border-slate-700/50 rounded-xl text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-sky-500/50 focus:ring-2 focus:ring-sky-500/20 transition-all duration-200"
+                    className="block w-full pl-10 pr-10 py-2.5 bg-slate-950/50 border border-slate-700/50 rounded-xl text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-sky-500/50 focus:ring-2 focus:ring-sky-500/20 transition-all duration-200"
                   />
-                  {formData.password && (
-                    <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-                      {passwordLengthValid ? (
-                        <CheckCircle2 size={16} className="text-green-500 transition-colors" />
-                      ) : (
-                        <span className="text-xs text-slate-500 transition-colors">{formData.password.length}/8</span>
-                      )}
-                    </div>
-                  )}
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute inset-y-0 right-10 pr-2 flex items-center text-slate-500 hover:text-slate-300 focus:outline-none transition-colors"
+                  >
+                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                  </button>
                 </div>
               </div>
 
@@ -143,27 +143,25 @@ export default function SignUpPage() {
                     <Lock size={18} />
                   </div>
                   <input
-                    type="password"
+                    type={showConfirmPassword ? "text" : "password"}
                     id="confirmPassword"
                     name="confirmPassword"
                     value={formData.confirmPassword}
                     onChange={handleChange}
                     required
                     placeholder="Repeat password"
-                    className={`block w-full pl-10 pr-3 py-2.5 bg-slate-950/50 border rounded-xl text-slate-100 placeholder:text-slate-600 focus:outline-none focus:ring-2 transition-all duration-200 ${formData.confirmPassword && !passwordsMatch
+                    className={`block w-full pl-10 pr-10 py-2.5 bg-slate-950/50 border rounded-xl text-slate-100 placeholder:text-slate-600 focus:outline-none focus:ring-2 transition-all duration-200 ${formData.confirmPassword && !passwordsMatch
                         ? 'border-red-500/50 focus:border-red-500/50 focus:ring-red-500/20'
                         : 'border-slate-700/50 focus:border-sky-500/50 focus:ring-sky-500/20'
                       }`}
                   />
-                  {formData.confirmPassword && (
-                    <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-                      {passwordsMatch ? (
-                        <CheckCircle2 size={16} className="text-green-500" />
-                      ) : (
-                        <XCircle size={16} className="text-red-500" />
-                      )}
-                    </div>
-                  )}
+                  <button
+                    type="button"
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                    className="absolute inset-y-0 right-10 pr-2 flex items-center text-slate-500 hover:text-slate-300 focus:outline-none transition-colors"
+                  >
+                    {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                  </button>
                 </div>
               </div>
 

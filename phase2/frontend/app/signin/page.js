@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { authClient } from '@/lib/auth-client';
-import { Loader2, Mail, Lock, ArrowRight } from 'lucide-react';
+import { Loader2, Mail, Lock, ArrowRight, Eye, EyeOff } from 'lucide-react';
 
 export default function SignInPage() {
   const router = useRouter();
@@ -14,6 +14,7 @@ export default function SignInPage() {
   });
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   function handleChange(e) {
     const { name, value } = e.target;
@@ -47,7 +48,7 @@ export default function SignInPage() {
       <div className="w-full max-w-md">
         {/* Glassmorphism Card */}
         <div className="backdrop-blur-xl bg-slate-900/60 border border-slate-700/50 rounded-2xl p-8 shadow-2xl relative overflow-hidden">
-
+          
           {/* Background decoration */}
           <div className="absolute top-0 right-0 -mt-16 -mr-16 w-32 h-32 bg-sky-500/10 rounded-full blur-3xl"></div>
           <div className="absolute bottom-0 left-0 -mb-16 -ml-16 w-32 h-32 bg-blue-600/10 rounded-full blur-3xl"></div>
@@ -91,24 +92,31 @@ export default function SignInPage() {
 
               <div className="space-y-1.5">
                 <div className="flex justify-between items-center ml-1">
-                  <label htmlFor="password" className="block text-sm font-medium text-slate-300">
-                    Password
-                  </label>
+                    <label htmlFor="password" className="block text-sm font-medium text-slate-300">
+                      Password
+                    </label>
                 </div>
                 <div className="relative group">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-500 group-focus-within:text-sky-400 transition-colors">
                     <Lock size={18} />
                   </div>
                   <input
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     id="password"
                     name="password"
                     value={formData.password}
                     onChange={handleChange}
                     required
                     placeholder="••••••••"
-                    className="block w-full pl-10 pr-3 py-2.5 bg-slate-950/50 border border-slate-700/50 rounded-xl text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-sky-500/50 focus:ring-2 focus:ring-sky-500/20 transition-all duration-200"
+                    className="block w-full pl-10 pr-10 py-2.5 bg-slate-950/50 border border-slate-700/50 rounded-xl text-slate-100 placeholder:text-slate-600 focus:outline-none focus:border-sky-500/50 focus:ring-2 focus:ring-sky-500/20 transition-all duration-200"
                   />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-500 hover:text-slate-300 focus:outline-none transition-colors"
+                  >
+                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                  </button>
                 </div>
               </div>
 
