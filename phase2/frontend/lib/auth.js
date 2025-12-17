@@ -6,7 +6,7 @@ import { Kysely, PostgresDialect } from "kysely";
 const { Pool } = pg;
 
 export const auth = betterAuth({
-  baseURL: process.env.BETTER_AUTH_URL || process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000",
+  baseURL: process.env.BETTER_AUTH_URL || process.env.NEXT_PUBLIC_APP_URL || (process.env.NODE_ENV === 'production' ? "https://hackathon-ii-claude-code-spec-drive.vercel.app" : "http://localhost:3000"),
   trustedOrigins: [
     "https://hackathon-ii-claude-code-spec-drive.vercel.app",
     process.env.NEXT_PUBLIC_APP_URL,
