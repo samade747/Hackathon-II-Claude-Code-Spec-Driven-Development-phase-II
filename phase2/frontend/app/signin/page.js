@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { authClient } from '@/lib/auth-client';
@@ -146,6 +146,12 @@ export default function SignInPage() {
                   Create one now
                 </Link>
               </p>
+            </div>
+
+            {/* DEBUG SECTION - REMOVE AFTER FIXING */}
+            <div className="mt-8 p-4 bg-slate-950/50 rounded-lg text-xs font-mono text-slate-400 border border-slate-800">
+              <p className="mb-2 font-bold text-slate-300">Auth Debugger:</p>
+              <SessionDebugger />
             </div>
           </div>
         </div>
